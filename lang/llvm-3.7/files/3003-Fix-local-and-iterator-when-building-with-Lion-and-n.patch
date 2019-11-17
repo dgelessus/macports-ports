@@ -14,6 +14,15 @@ diff --git llvm_master/projects/libcxx/include/iterator macports_master/projects
 index bcf142a..0b90d96 100644
 --- llvm_master/projects/libcxx/include/iterator
 +++ macports_master/projects/libcxx/include/iterator
+@@ -345,7 +345,7 @@
+ #include <cstddef>
+ #include <iosfwd>
+ #include <initializer_list>
+-#ifdef __APPLE__
++#if defined(__APPLE__) && __has_include(<Availability.h>)
+ #include <Availability.h>
+ #endif
+ 
 @@ -920,8 +920,8 @@ public:
      _LIBCPP_INLINE_VISIBILITY bool failed() const _NOEXCEPT {return __sbuf_ == 0;}
  
@@ -29,7 +38,16 @@ diff --git llvm_master/projects/libcxx/include/locale macports_master/projects/l
 index 0d01002..789b083 100644
 --- llvm_master/projects/libcxx/include/locale
 +++ macports_master/projects/libcxx/include/locale
-@@ -1473,8 +1473,8 @@ __pad_and_output(_OutputIterator __s,
+@@ -203,7 +203,7 @@
+ #include <nl_types.h>
+ #endif
+ 
+-#ifdef __APPLE__
++#if defined(__APPLE__) && __has_include(<Availability.h>)
+ #include <Availability.h>
+ #endif
+ 
+@@ -1474,8 +1474,8 @@ __pad_and_output(_OutputIterator __s,
  }
  
  #if !defined(__APPLE__) || \
