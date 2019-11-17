@@ -143,6 +143,7 @@ patchfiles \
         0005-MacPorts-Only-Don-t-embed-the-deployment-target-in-t.patch \
         0006-MacPorts-Only-Skip-checking-for-python-in-configure.patch \
         0007-Remove-override-of-raise-abort-and-__assert_rtn.patch \
+        0008-Use-PRIO_DARWIN_THREAD-only-if-available.patch \
         llvm-skip-unittests.patch
 
 if {${subport} eq "clang-${llvm_version}"} {
