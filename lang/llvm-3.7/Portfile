@@ -321,6 +321,10 @@ platform darwin {
         post-configure {
             reinplace "/^RPATH/s/=.*/=/" ${configure.dir}/Makefile.config
         }
+
+        if {${subport} eq "clang-${llvm_version}"} {
+            patchfiles-append tiger-hardcode-compiler-rt-sdk-paths.patch
+        }
     }
 }
 

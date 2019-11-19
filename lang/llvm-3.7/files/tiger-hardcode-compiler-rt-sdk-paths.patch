@@ -1,0 +1,58 @@
+--- a/projects/compiler-rt/make/platform/clang_darwin.mk.orig
++++ b/projects/compiler-rt/make/platform/clang_darwin.mk
+@@ -46,19 +46,6 @@
+     result=`xcrun -find $(1) 2> /dev/null`; \
+     if [ "$$?" != "0" ]; then result=$(1); fi; \
+     echo $$result)
+-# Prefer building with the internal SDKs.
+-XCRunSdkPath = \
+-  $(shell \
+-    result=`xcrun --sdk $(1).internal --show-sdk-path 2> /dev/null`; \
+-    if [ "$$?" != "0" ]; then \
+-      result=`xcrun --sdk $(1) --show-sdk-path 2> /dev/null`; \
+-      if [ "$$?" != "0" ]; then \
+-        result=`xcodebuild -sdk $(1) -version 2> /dev/null \
+-                | sed -n 's/^Path: \(..*\)$$/\1/p'`; \
+-      fi; \
+-      if [ "$$?" != "0" ]; then result=""; fi; \
+-    fi; \
+-    echo $$result)
+ ###
+ 
+ CC       := $(call XCRun,clang)
+@@ -69,9 +40,9 @@
+ LIPO     := @@PREFIX@@/bin/lipo
+ DSYMUTIL := @@PREFIX@@/bin/dsymutil
+ 
+-OSX_SDK := $(call XCRunSdkPath,macosx)
+-IOS_SDK := $(call XCRunSdkPath,iphoneos)
+-IOSSIM_SDK := $(call XCRunSdkPath,iphonesimulator)
++OSX_SDK := /Developer/SDKs/MacOSX10.4u.sdk
++IOS_SDK :=
++IOSSIM_SDK :=
+ 
+ Configs :=
+ UniversalArchs :=
+--- a/tools/clang/runtime/compiler-rt/Makefile.orig
++++ b/tools/clang/runtime/compiler-rt/Makefile
+@@ -80,18 +80,9 @@
+ 	eprintf.a 10.4.a osx.a cc_kext.a \
+ 	profile_osx.a
+ 
+-XCRunSdkPath = \
+-  $(shell \
+-    result=`xcrun --sdk $(1) --show-sdk-path 2> /dev/null`; \
+-    if [ "$$?" != "0" ]; then \
+-      result=`xcodebuild -sdk $(1) -version 2> /dev/null \
+-              | sed -n 's/^Path: \(..*\)$$/\1/p'`; \
+-    fi; \
+-    if [ "$$?" != "0" ]; then result=""; fi; \
+-    echo $$result)
+ 
+-IOS_SDK := $(call XCRunSdkPath,iphoneos)
+-IOSSIM_SDK := $(call XCRunSdkPath,iphonesimulator)
++IOS_SDK :=
++IOSSIM_SDK :=
+ 
+ ifneq ($(IOS_SDK)$(IOSSIM_SDK),)
+ RuntimeLibrary.darwin.Configs += ios.a profile_ios.a
